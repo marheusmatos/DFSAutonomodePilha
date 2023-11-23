@@ -12,10 +12,11 @@ class AutomatoDePilha:
             'simboloDesempilhar': simbolo_desempilhar
         })
 
-    def busca_em_profundidade(self, estado_atual, entrada, n):
+    def run(self, estado_atual, entrada, n=0):
         entrada_atual = list(entrada)
+   
         print(f"Estado Atual: {estado_atual}, Entrada: {entrada_atual[n] if n < len(entrada_atual) else 'Fim'}")
-
+        print(self.pilha)
         if n >= len(entrada_atual):
             if not self.pilha:
                 print("\nPALAVRA ACEITA!")
@@ -42,7 +43,7 @@ class AutomatoDePilha:
                     if not self.pilha:
                         novo_estado = "q3"
 
-                self.busca_em_profundidade(novo_estado, entrada, n + 1)
+                self.run(novo_estado, entrada, n + 1)
 
 # Linguagem programada (a^n b^m c^n+m)
 # Exemplo de uso:
@@ -57,4 +58,4 @@ transicoes = [
 automato = AutomatoDePilha(transicoes)
 
 # Inicia a busca em profundidade a partir do estado inicial 'q0' e entrada 'abc'
-automato.busca_em_profundidade('q0', 'aabbcccc', 0)
+automato.run('q0', 'aabbcccc')
