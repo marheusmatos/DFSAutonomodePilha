@@ -3,11 +3,11 @@ class AutomatoDePilha:
         self.transicoes = transicoes
         self.pilha = []
 
-    def adicionar_transicao(self, estado_atual, entrada, novo_estado, simbolo_empilhar, simbolo_desempilhar):
+    def adicionar_transicao(self, estado_atual, entrada, estado_filho, simbolo_empilhar, simbolo_desempilhar):
         self.transicoes.append({
-            'estadoAtual': estado_atual,
+            'estado': estado_atual,
             'entrada': entrada,
-            'novoEstado': novo_estado,
+            'estadoFilho': estado_filho,
             'simboloEmpilhar': simbolo_empilhar,
             'simboloDesempilhar': simbolo_desempilhar
         })
@@ -16,7 +16,7 @@ class AutomatoDePilha:
         entrada_atual = list(entrada)
    
         print(f"Estado Atual: {estado_atual}, Entrada: {entrada_atual[n] if n < len(entrada_atual) else 'Fim'}")
-        print(self.pilha)
+        print("Estado da pilha: ", self.pilha)
         if n >= len(entrada_atual):
             if not self.pilha:
                 print("\nPALAVRA ACEITA!")
@@ -25,8 +25,8 @@ class AutomatoDePilha:
             return
 
         for transicao in self.transicoes:
-            if transicao['estadoAtual'] == estado_atual and transicao['entrada'] == entrada_atual[n]:
-                novo_estado = transicao['novoEstado']
+            if transicao['estado'] == estado_atual and transicao['entrada'] == entrada_atual[n]:
+                estado_filho = transicao['estadoFilho']
                 simbolo_empilhar = transicao['simboloEmpilhar']
                 simbolo_desempilhar = transicao['simboloDesempilhar']
 
@@ -41,21 +41,14 @@ class AutomatoDePilha:
 
                 if n + 1 >= len(entrada_atual):
                     if not self.pilha:
-                        novo_estado = "q3"
+                        estado_filho = "q3"
 
-                self.run(novo_estado, entrada, n + 1)
+                self.run(estado_filho, entrada, n + 1)
 
-# Linguagem programada (a^n b^m c^n+m)
-# Exemplo de uso:
-transicoes = [
-    {'estadoAtual': 'q0', 'entrada': 'a', 'novoEstado': 'q0', 'simboloEmpilhar': 'X', 'simboloDesempilhar': ''},
-    {'estadoAtual': 'q0', 'entrada': 'b', 'novoEstado': 'q1', 'simboloEmpilhar': 'X', 'simboloDesempilhar': ''},
-    {'estadoAtual': 'q1', 'entrada': 'b', 'novoEstado': 'q1', 'simboloEmpilhar': 'X', 'simboloDesempilhar': ''},
-    {'estadoAtual': 'q1', 'entrada': 'c', 'novoEstado': 'q2', 'simboloEmpilhar': '', 'simboloDesempilhar': 'X'},
-    {'estadoAtual': 'q2', 'entrada': 'c', 'novoEstado': 'q2', 'simboloEmpilhar': '', 'simboloDesempilhar': 'X'},
-]
 
-automato = AutomatoDePilha(transicoes)
+# Exemplo de uso: escolher uma transição de "transicoes.py"
+import transicoes
+automato = AutomatoDePilha(transicoes.exemplo)
 
-# Inicia a busca em profundidade a partir do estado inicial 'q0' e entrada 'abc'
+# Verifica se a palavra é aceita
 automato.run('q0', 'aabbcccc')
