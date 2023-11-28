@@ -10,6 +10,7 @@ RED     = (255, 0, 0)
 BLUE    = (0 , 0, 255)
 GREEN   = (0, 255, 0)
 BROWN   = (160, 82, 45)
+DARKBORWN = (83, 42, 23)
 
 def create_texture(color):
     image = pygame.Surface((TILE_SIZE, TILE_SIZE))
@@ -23,7 +24,8 @@ textures = {
     0 : create_texture(GREEN),
     1 : create_texture(BROWN),
     2 : create_texture(BLUE),
-    3 : create_texture(RED)
+    3 : create_texture(RED),
+    4 : create_texture(DARKBORWN),
 }
 
 tiles = [0,1]
