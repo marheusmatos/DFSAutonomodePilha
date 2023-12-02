@@ -1,6 +1,6 @@
 import pygame
 import random
-
+import time
 from tilemap import *  # Importação de módulo externo (tilemap.py)
 
 # inicializando pygame
@@ -32,9 +32,22 @@ map_data = [
     [0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
     [0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0],
 ]
+
+def AtualizaGraficoDaTela():
+    tela.fill((31, 106, 0))
+    tela.blit(imgMapa, (480, 0))
+    draw_map(tela, map_data)
+    sprites_grupo.draw(tela)
+    
+
+
 #comecando...
 caminho = []
 def depth_first_search(map_data, x, y, caminho):
+    
+    
+    AtualizaGraficoDaTela()
+
     rows = len(map_data)
     cols = len(map_data[0])
 
@@ -69,24 +82,33 @@ def find_start(map_data):
 
 start_posicao = find_start(map_data)
 
-if start_posicao:
-    start_x, start_y = start_posicao
-    if depth_first_search(map_data, start_x, start_y, caminho):
-        print("Caminho encontrado!")
-        print("Caminho percorrido:")
-        for celula in caminho:
-            print(celula)
-    else:
-        print("Não há caminho para a saída.")
-else:
-    print("Posição inicial não encontrada no mapa.")
-
 #carregando iamgem do mapa
 imgMapa = pygame.image.load('fundoMapa.png')
+
+def desenharCaminhoDFS():
+    if start_posicao:
+        start_x, start_y = start_posicao
+        if depth_first_search(map_data, start_x, start_y, caminho):
+            print("Caminho encontrado!")
+            print("Caminho percorrido:")
+            for celula in caminho:
+                print(celula)
+        else:
+            print("Não há caminho para a saída.")
+    else:
+        print("Posição inicial não encontrada no mapa.")
+
+
 
 def main():
     running = True
     # the game loop
+
+    # desenhar
+
+
+    start_x, start_y = start_posicao
+    depth_first_search(map_data, start_x, start_y, caminho)
 
     while running:
         clock.tick(30)
@@ -94,11 +116,8 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        # desenhar
-        tela.fill((31, 106, 0))
-        tela.blit(imgMapa, (480, 0))
-        draw_map(tela, map_data)
-        sprites_grupo.draw(tela)
+
+
 
         # update
         sprites_grupo.update()
