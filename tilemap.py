@@ -17,8 +17,8 @@ def create_texture(color):
     image.fill(color)
     return image
 
-# 0x0 -> grass
-# 0xb -> dirt
+# 0x0 -> mato
+# 0xb -> caminho
 
 textures = {
     0 : create_texture(GREEN),
@@ -30,7 +30,7 @@ textures = {
 
 tiles = [0,1]
 
-# generate with tiles randomly
+# Gera os tiles automaticamente
 def generate_map(width, height, tilesize = TILE_SIZE):
     map_data = []
     for i in range(height // tilesize):

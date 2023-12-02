@@ -1,20 +1,19 @@
 import pygame
 import random
 
-from tilemap import *
+from tilemap import *  # Importação de módulo externo (tilemap.py)
 
-# we initialize pygame module
+# inicializando pygame
 pygame.init()
 
 clock = pygame.time.Clock()
 
 
-# create a surface represent our window
-screen = pygame.display.set_mode((640, 480))
+# criando a janela
+tela = pygame.display.set_mode((640, 480))
 
-sprites_group = pygame.sprite.Group()
+sprites_grupo = pygame.sprite.Group()
 
-# map_data = generate_map(640, 480)
 
 map_data = [
     [1, 2, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0],
@@ -34,15 +33,15 @@ map_data = [
     [0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0],
 ]
 #comecando...
-path = []
-def depth_first_search(map_data, x, y, path):
+caminho = []
+def depth_first_search(map_data, x, y, caminho):
     rows = len(map_data)
     cols = len(map_data[0])
 
     if (x < 0 or y < 0 or x >= rows or y >= cols or map_data[x][y] == 0 or map_data[x][y] == 4):
         return False
 
-    path.append((x, y))  # Adiciona a célula ao caminho percorrido
+    caminho.append((x, y))  # Adiciona a célula ao caminho percorrido
     prev_value = map_data[x][y]
     map_data[x][y] = 4  # Marca a célula como visitada
 
@@ -51,32 +50,32 @@ def depth_first_search(map_data, x, y, path):
         return True
 
     # Movimentos possíveis: cima, baixo, esquerda, direita
-    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    direcoes = [(0, 1), (0, -1), (1, 0), (-1, 0)]
 
-    for dx, dy in directions:
-        if depth_first_search(map_data, x + dx, y + dy, path):
+    for dx, dy in direcoes:
+        if depth_first_search(map_data, x + dx, y + dy, caminho):
             return True
 
     # Se nenhum caminho foi encontrado a partir desta célula, remove-a do caminho
-    path.pop()
+    caminho.pop()
     return False
 
 def find_start(map_data):
     for i, row in enumerate(map_data):
-        for j, cell in enumerate(row):
-            if cell == 2:  # Encontrou a posição inicial (valor 2)
+        for j, celula in enumerate(row):
+            if celula == 2:  # Encontrou a posição inicial (valor 2)
                 return i, j
     return None
 
-start_position = find_start(map_data)
+start_posicao = find_start(map_data)
 
-if start_position:
-    start_x, start_y = start_position
-    if depth_first_search(map_data, start_x, start_y, path):
+if start_posicao:
+    start_x, start_y = start_posicao
+    if depth_first_search(map_data, start_x, start_y, caminho):
         print("Caminho encontrado!")
         print("Caminho percorrido:")
-        for cell in path:
-            print(cell)
+        for celula in caminho:
+            print(celula)
     else:
         print("Não há caminho para a saída.")
 else:
@@ -95,14 +94,14 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        # draw
-        screen.fill((31, 106, 0))
-        screen.blit(imgMapa, (480, 0))
-        draw_map(screen, map_data)
-        sprites_group.draw(screen)
+        # desenhar
+        tela.fill((31, 106, 0))
+        tela.blit(imgMapa, (480, 0))
+        draw_map(tela, map_data)
+        sprites_grupo.draw(tela)
 
         # update
-        sprites_group.update()
+        sprites_grupo.update()
         pygame.display.flip()
 
 
