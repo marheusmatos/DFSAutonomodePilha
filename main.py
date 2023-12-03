@@ -10,7 +10,7 @@ clock = pygame.time.Clock()
 
 
 # criando a janela
-tela = pygame.display.set_mode((640, 480))
+tela = pygame.display.set_mode((480, 480))
 
 sprites_grupo = pygame.sprite.Group()
 
@@ -35,10 +35,11 @@ map_data = [
 
 def AtualizaGraficoDaTela():
     tela.fill((31, 106, 0))
-    tela.blit(imgMapa, (480, 0))
     draw_map(tela, map_data)
     sprites_grupo.draw(tela)
-    
+    sprites_grupo.update()
+    pygame.display.flip()
+    time.sleep(0.1)
 
 
 #comecando...
@@ -82,9 +83,6 @@ def find_start(map_data):
 
 start_posicao = find_start(map_data)
 
-#carregando iamgem do mapa
-imgMapa = pygame.image.load('fundoMapa.png')
-
 def desenharCaminhoDFS():
     if start_posicao:
         start_x, start_y = start_posicao
@@ -105,10 +103,10 @@ def main():
     # the game loop
 
     # desenhar
-
+    AtualizaGraficoDaTela()
 
     start_x, start_y = start_posicao
-    depth_first_search(map_data, start_x, start_y, caminho)
+    
 
     while running:
         clock.tick(30)
@@ -116,9 +114,11 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-
-
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    print("Spacebar pressed!")
+                    depth_first_search(map_data, start_x, start_y, caminho)
+                    
         # update
         sprites_grupo.update()
         pygame.display.flip()
