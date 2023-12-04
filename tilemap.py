@@ -41,8 +41,8 @@ def generate_map(width, height, tilesize = TILE_SIZE):
             rand_index = random.randint(0,1)
             # convert to hex from string value
             tile = tiles[rand_index]
-            map_data[i].append(tile)
-    #map_data[random.randint(0,1)]
+            map_data[i].append(tile)    
+    map_data[random.randint(0,14)][random.randint(0,14)] = 3
     return map_data
 
 

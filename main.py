@@ -51,7 +51,7 @@ def depth_first_search(map_data, x, y, caminho):
     
     print("Pilha: ", caminho, end=' ')
     AtualizaGraficoDaTela()
-    time.sleep(0.1)
+    #time.sleep(0.1)
 
     rows = len(map_data)
     cols = len(map_data[0])
