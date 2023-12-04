@@ -103,8 +103,9 @@ def desenharCaminhoDFS():
 def obterCelulaMouseOnHover(x,y,tamanhoCelula = TILE_SIZE):
     cell_x = math.floor(x/tamanhoCelula) 
     cell_y = math.floor(y/tamanhoCelula) 
-    print("Valor x:",cell_x," || Valor y:",cell_y)
+    #print("Valor x:",cell_x," || Valor y:",cell_y)
     pygame.draw.rect(tela,BLUE,(cell_x*TILE_SIZE,cell_y*TILE_SIZE,TILE_SIZE,TILE_SIZE))
+    return cell_x, cell_y
 
 def main():
     global map_data, caminho
@@ -124,9 +125,19 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    map_data[start_x][start_y] = 1
+                    x, y = pygame.mouse.get_pos()
+                    start_x, start_y = obterCelulaMouseOnHover(x,y)
+                    print(start_x," | ",start_y)
+                    map_data[start_y][start_x] = 2
+                    print(map_data)
+
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     print("Spacebar pressed!")
+                    start_x, start_y = find_start(map_data)
                     depth_first_search(map_data, start_x, start_y, caminho)
                 elif event.key == pygame.K_r:
                     map_data = generate_map(480,480)
