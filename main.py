@@ -49,7 +49,7 @@ def AtualizaGraficoDaTela():
 caminho = []
 def depth_first_search(map_data, x, y, caminho):
     
-    
+    print("Pilha: ", caminho, end=' ')
     AtualizaGraficoDaTela()
     time.sleep(0.1)
 
@@ -78,10 +78,10 @@ def depth_first_search(map_data, x, y, caminho):
     caminho.pop()
     return False
 
-def find_start(map_data):
+def find_start(map_data, valor=2):
     for i, row in enumerate(map_data):
         for j, celula in enumerate(row):
-            if celula == 2:  # Encontrou a posição inicial (valor 2)
+            if celula == valor:  # Encontrou a posição inicial (valor 2)
                 return i, j
     return None
 
@@ -130,9 +130,13 @@ def main():
                     map_data[start_x][start_y] = 1
                     x, y = pygame.mouse.get_pos()
                     start_x, start_y = obterCelulaMouseOnHover(x,y)
-                    print(start_x," | ",start_y)
                     map_data[start_y][start_x] = 2
-                    print(map_data)
+                elif event.button == 3:
+                    chegada_x, chegada_y = find_start(map_data, valor=3)
+                    map_data[chegada_x][chegada_y] = 1
+                    x, y = pygame.mouse.get_pos()
+                    xx,yy= obterCelulaMouseOnHover(x,y)
+                    map_data[xx][yy] = 3
 
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
