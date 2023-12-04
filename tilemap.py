@@ -17,8 +17,10 @@ def create_texture(color):
     image.fill(color)
     return image
 
-# 0x0 -> mato
-# 0xb -> caminho
+# 0 -> mato
+# 1 -> caminho
+# 2 -> Começo
+# 3 -> Chegada
 
 textures = {
     0 : create_texture(GREEN),
@@ -40,6 +42,7 @@ def generate_map(width, height, tilesize = TILE_SIZE):
             # convert to hex from string value
             tile = tiles[rand_index]
             map_data[i].append(tile)
+    #map_data[random.randint(0,1)]
     return map_data
 
 

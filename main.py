@@ -2,6 +2,7 @@ import pygame
 import random
 import time
 from tilemap import *  # Importação de módulo externo (tilemap.py)
+import math
 
 # inicializando pygame
 pygame.init()
@@ -36,10 +37,12 @@ map_data = [
 def AtualizaGraficoDaTela():
     tela.fill((31, 106, 0))
     draw_map(tela, map_data)
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    obterCelulaMouseOnHover(mouse_x,mouse_y)
     sprites_grupo.draw(tela)
     sprites_grupo.update()
     pygame.display.flip()
-    time.sleep(0.1)
+    
 
 
 #comecando...
@@ -48,6 +51,7 @@ def depth_first_search(map_data, x, y, caminho):
     
     
     AtualizaGraficoDaTela()
+    time.sleep(0.1)
 
     rows = len(map_data)
     cols = len(map_data[0])
@@ -96,9 +100,14 @@ def desenharCaminhoDFS():
     else:
         print("Posição inicial não encontrada no mapa.")
 
-
+def obterCelulaMouseOnHover(x,y,tamanhoCelula = TILE_SIZE):
+    cell_x = math.floor(x/tamanhoCelula) 
+    cell_y = math.floor(y/tamanhoCelula) 
+    print("Valor x:",cell_x," || Valor y:",cell_y)
+    pygame.draw.rect(tela,BLUE,(cell_x*TILE_SIZE,cell_y*TILE_SIZE,TILE_SIZE,TILE_SIZE))
 
 def main():
+    global map_data, caminho
     running = True
     # the game loop
 
@@ -111,6 +120,7 @@ def main():
     while running:
         clock.tick(30)
 
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -118,10 +128,28 @@ def main():
                 if event.key == pygame.K_SPACE:
                     print("Spacebar pressed!")
                     depth_first_search(map_data, start_x, start_y, caminho)
+                elif event.key == pygame.K_r:
+                    map_data = generate_map(480,480)
+                    print(map_data)
+                    draw_map(tela, map_data)
+                elif event.key == pygame.K_s:
+                    start_x = int(input("Posição x inicial:"))
+                    start_y = int(input("Posição y inicial:"))
+                    map_data[start_x][start_y] = 2
+                    draw_map(tela, map_data)
+
+                    print("Agora, coletando dados da coordenade de chegada")
+                    finish_x = int(input("Posição x final:"))
+                    finish_y = int(input("Posição x final:"))
+                    map_data[finish_x][finish_y] = 3
+                    caminho = []
+                    depth_first_search(map_data, start_x, start_y, caminho)
+
+
                     
         # update
-        sprites_grupo.update()
-        pygame.display.flip()
+        AtualizaGraficoDaTela()
+
 
 
 if __name__ == "__main__":
